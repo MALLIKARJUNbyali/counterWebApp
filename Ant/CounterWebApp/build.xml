@@ -1,0 +1,33 @@
+<project name="deploy-war" basedir="." default="init">
+	<target name="clean">
+		<delete dir="build" />
+		<delete>
+			<fileset dir="." includes="*.war"/>
+		</delete>
+	
+	</target>
+	<target name="init" depends="clean">
+		<mkdir dir="build/classes"/>
+	</target>
+	<target name="compile" depends="init">
+		<javac srcdir="src" destdir="build/classes" />
+		<jar destfile="build/jar/hello.jar" basedir="build/classes">
+			<manifest>
+				<attribute name="main" value="test1.hello"/>
+			</manifest>
+		</jar>
+	</target>
+	<target name="run" depends="compile">
+		<java jar="bulid/jar/hello.jar" fork="true"/>
+	</target>
+	<target name="build-war" depends="clean">
+		<war destfile="counter.war" basedir="webcontent" webxml="D:\workspace1\GitWorkspace\darshan.d\Ant\CounterWebApp\WebContent\WEB-INF\web.xml"/>
+	</target>
+	<target name="deploy" depends="build-war">
+	<copy todir="D:\tools\apache-tomcat-7.0.88\webapps">
+	<fileset dir=".">
+	<include name="counter.war"/>
+	</fileset>
+	</copy>
+	</target>
+</project>
